@@ -1,0 +1,44 @@
+#LimitRanges are used to specify resource constraints for individual containers within a pod. 
+#They allow you to set minimum and maximum limits on CPU and memory usage for each container. 
+#Here's how you can create and use a LimitRange:
+
+apiVersion: v1
+kind: LimitRange
+metadata:
+   name: limit
+
+spec:
+  limits:
+  - type: Container
+    max:
+      cpu: "1"            # Maximum CPU limit per container (1 core)
+      memory: "512Mi"     # Maximum memory limit per container (512 MiB)
+    min:
+      cpu: "100m"         # Minimum CPU request per container (100 milli-cores)
+      memory: "64Mi"      # Minimum memory request per container (64 MiB)
+
+
+
+#Create Pods with Resource Limits:
+#Now, when you define pods within this namespace, 
+#you can specify resource requests and limits for the containers. 
+#Here's an example pod definition:
+
+apiVersion: v1
+kind: Pods
+metadata:
+   name: myapp
+spec:
+  containers:
+     name: nginx-container
+     image: nginx
+     resources:
+      requests:
+        cpu: "200m"         # CPU request (200 milli-cores)
+        memory: "128Mi"     # Memory request (128 MiB)
+      limits:
+        cpu: "500m"         # CPU limit (500 milli-cores)
+        memory: "256Mi"     # Memory limit (256 MiB)
+
+
+  
