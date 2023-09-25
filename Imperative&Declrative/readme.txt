@@ -53,3 +53,16 @@ Create a Service named nginx of type NodePort to expose pod nginx's port 80 on p
 kubectl expose pod nginx --type=NodePort --port=80 --name=nginx-service --dry-run=client -o yaml
 
 (This will automatically use the pod's labels as selectors, but you cannot specify the node port. You have to generate a definition file and then add the node port in manually before creating the service with the pod.)
+
+-Create a pod called httpd using the image httpd:alpine in the default namespace. 
+Next, create a service of type ClusterIP by the same name (httpd). 
+The target port for the service should be 80. (creating a sevice for a not alreadying running pod)
+ * kubectl run httpd --image=httpd:alpine --port=80 --expose
+
+kubectl apply -f <filename> - stores last applied configuration, it's stored on the live object configuration
+on the Kubernetes cluster itself
+as an annotation named a last applied configuration.
+So remember that this is only done
+when you use the apply command.
+The kubectl create or replace command
+do not store the last applied configuration like this.

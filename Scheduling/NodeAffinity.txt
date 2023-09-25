@@ -1,0 +1,56 @@
+Node affinity is a Kubernetes feature that allows you to control the placement of Pods based on the characteristics or location of nodes in your cluster. With node affinity rules, you can influence where Pods are scheduled by specifying node affinity requirements in your Pod's configuration.
+Node affinity rules are defined using labels on nodes and selectors in your Pod's configuration. They consist of the following components:
+Node Selector Terms: A node affinity rule can contain one or more "node selector terms." Each term consists of a set of match expressions, and all expressions in a term must be satisfied for the term to be considered a match.
+Match Expressions: A match expression specifies a label key and a list of values. It defines the criteria that a node must meet for a term to be considered satisfied. You can use the "In" operator to specify a list of values or the "NotIn" operator to specify a list of values that a node must or must not have, respectively.
+Here's an example of a Pod specification with node affinity rules:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: zone
+            operator: In
+            values:
+            - east
+            - west
+  containers:
+  - name: my-container
+    image: nginx
+In this example:
+
+The Pod has a node affinity requirement that specifies it should be scheduled on nodes with the label zone having values "east" or "west."
+The requiredDuringSchedulingIgnoredDuringExecution field means that the requirement is enforced at scheduling time, and once the Pod is running, it is not evicted if nodes no longer match the criteria.
+Node affinity can be used for various scenarios, such as:
+Ensuring that certain Pods are placed on nodes in specific availability zones or regions.
+Distributing workloads evenly across nodes with specific hardware capabilities (e.g., nodes with GPUs).
+Avoiding colocating workloads with certain characteristics (e.g., avoiding scheduling sensitive workloads on the same nodes as noisy neighbors).
+Node affinity, along with its counterpart Node Anti-Affinity, provides flexibility in controlling workload placement and optimizing the distribution of Pods in your Kubernetes cluster.
+
+
+In Kubernetes, there are two types of Node Affinity rules you can use to influence the scheduling of Pods onto specific nodes based on node characteristics: requiredDuringSchedulingIgnoredDuringExecution and preferredDuringSchedulingIgnoredDuringExecution.
+These types determine how rigidly the affinity rule is enforced and how it affects Pod scheduling.
+
+requiredDuringSchedulingIgnoredDuringExecution (Hard Node Affinity):
+With this type, the affinity rule is a strict requirement for scheduling the Pod. If the rule is not satisfied, the Pod won't be scheduled.
+Once a Pod is scheduled onto a node based on the requiredDuringSchedulingIgnoredDuringExecution rule, it will continue to run on that node, even if the node no longer meets the affinity criteria.
+Use this type when you have strict placement requirements, and the Pod should not be scheduled on nodes that don't meet those requirements.
+
+preferredDuringSchedulingIgnoredDuringExecution (Soft Node Affinity):
+With this type, the affinity rule is preferred but not required. If a node meets the rule, it is given a higher priority during scheduling, but the Pod can still be scheduled on other nodes if necessary.
+Unlike the required type, if a node no longer meets the affinity criteria after a Pod is scheduled, the Pod will continue running on that node.
+Use this type when you have a preference for scheduling but can tolerate scheduling on other nodes if preferred nodes are not available.
+
+
+The following are all the logical operators that you can use in the operator field for nodeAffinity and podAffinity mentioned above.
+
+Operator	Behavior
+In	The label value is present in the supplied set of strings
+NotIn	The label value is not contained in the supplied set of strings
+Exists	A label with this key exists on the object
+DoesNotExist	No label with this key exists on the object

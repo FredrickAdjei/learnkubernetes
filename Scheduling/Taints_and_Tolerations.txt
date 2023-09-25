@@ -1,0 +1,56 @@
+Taints and tolerations are used to set restrictions
+on what pods can be scheduled on a node.
+
+Taints and tolerations are Kubernetes concepts used to control which nodes in a cluster can schedule Pods. They are commonly used for scenarios where you want to influence the placement of Pods on specific nodes or segregate workloads based on node characteristics or requirements.
+Taints:
+A taint is a label applied to a node that repels Pods unless the Pods have corresponding tolerations.
+Taints are used to indicate that a node has a specific attribute or limitation that makes it unsuitable for certain types of workloads.
+Taints consist of a key, a value, and an effect.
+Key: A user-defined string that represents the attribute.
+Value: A user-defined string that specifies the value associated with the key.
+Effect: Can be one of three values:
+NoSchedule: Pods without matching tolerations are not scheduled on the tainted node.
+PreferNoSchedule: The scheduler tries to avoid scheduling Pods without matching tolerations on the tainted node but can do so if necessary.
+NoExecute: Similar to NoSchedule, but also evicts existing Pods that do not tolerate the taint.
+Tolerations:
+
+A toleration is a field in a Pod's configuration that allows the Pod to schedule onto nodes with matching taints.
+Tolerations specify which taints a Pod can tolerate.
+A toleration consists of a key, a value (optional), an effect, and an operator.
+Key: The same as the key of the taint.
+Value (optional): Specifies the value associated with the taint. If omitted, any value will match.
+Effect: Should match the effect of the taint (NoSchedule, PreferNoSchedule, NoExecute).
+Operator: Can be "Equal" (default) or "Exists." The "Exists" operator matches any value.
+
+
+taints on node
+kubectl taint nodes <node-name> key=value:taint-effect
+there are 3 types of taint effects
+noschedule,prefernoschedule,noexecute
+
+Use the kubectl taint nodes command to taint a node
+specify the name of the node to taint
+followed by the taint itself, which is a key value pair.
+For example, if you would like to dedicate the node
+to pods in application blue,
+then the key value pair would be app=blue.
+The taint effect defines what would happen
+to the pods if they do not tolerate the taint
+
+There are three taint effects,
+no schedule, which means the pods
+will not be scheduled on the node,
+which is what we have been discussing.
+Prefer no schedule, which means the system
+will try to avoid placing a pod on the node,
+but that is not guaranteed.
+And third is no execute, which means that new pods
+will not be scheduled on the node
+and existing pods on the node, if any, will be evicted
+if they do not tolerate the taint.
+These pods may have been scheduled
+on the node before the taint was applied to the node.
+
+If your requirement is to restrict a pod to certain nodes,
+it is achieved through another concept called
+as node affinity.

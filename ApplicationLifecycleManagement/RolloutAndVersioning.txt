@@ -1,0 +1,49 @@
+Rolling Updates: By default, Deployments in Kubernetes perform rolling updates when you change the desired state. 
+This means that it gradually replaces old Pods with new Pods based on the update strategy and readiness checks. 
+This approach ensures that the application remains available during the update.
+
+Version Labels: It's a good practice to label your Pods with version information. 
+For example, you can use labels like app=my-app and version=v1 to distinguish between different versions of the application.
+When you first create a deployment, it triggers a rollout.
+A new rollout creates a new deployment revision,
+let's call it revision one.
+In the future when the application is upgraded,
+meaning when the container version is updated to a new one,
+a new rollout is triggered,
+and a new deployment revision is created,
+named revision two.
+This helps us keep track of the changes made
+to our deployment and enables us to roll back
+to a previous version of deployment if necessary.
+
+To see the revisions and history of rollout,
+run the     - kubectl rollout history <nAMEOF DEPLOYMENT>
+followed by the deployment name,
+and this will show you the revisions
+and history of our deployment.
+rolling update is the default deployment strategy
+
+so you would like to roll back your update.
+Kubernetes deployments allow you to roll back
+to a previous revision.
+To undo a change,
+run the  -- kubectl rollout undo <NAME OF DEPLOYMENT>
+The deployment will then destroy the pods
+in the new replica set
+and bring the older ones up in the old replica set,
+and your application is back to its older format.
+
+
+- kubectl create -f <deplotment-definitionfile.yaml>  - create deployment
+- kubectl get <deployment-name> - get deployment
+
+update deployment
+- kubect apply -f <deplotment-definitionfile.yaml> 
+- kubectl set image deployment 
+
+status of rollouts
+kubectl rollout status <resource_type>/<resource_name>
+kubectl rollout history <resource_type>/<resource_name>
+
+kubectl rollout undo <resource_type>/<resource_name> - rollback a deployment
+

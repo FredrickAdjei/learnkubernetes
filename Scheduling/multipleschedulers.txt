@@ -1,0 +1,2 @@
+kubectl get events -o wide - get all current events in the current namespace
+kubectl logs my-custom-scheduler --namespace=kubesystem

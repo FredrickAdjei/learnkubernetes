@@ -1,0 +1,27 @@
+Config maps are used to pass configuration data
+in the form of key value pairs in Kubernetes.
+When a pod is created, inject the config map into the pod
+so the key value pairs are available
+as environment variables
+for the application hosted inside the container
+in the pod.
+
+create configmap-- 
+
+- kubectl create configmap <configname> --from-literal=<key>=<value>
+-kubectl create configmap  webapp-config-map --from-literal=APP_COLOR=darkblue --from-literal=APP_OTHER=disregard
+- kubectl create configmap <configname> --from-file=<pathtofile>
+
+ConfigMaps in Kubernetes are a mechanism for decoupling configuration artifacts from container images, allowing you to manage configuration data separately from your application code.
+ ConfigMaps store key-value pairs of configuration data and make it available to containers in a pod as environment variables or as files in a volume mount.
+
+ spec:
+  containers:
+  - env:
+    - name: APP_COLOR
+      valueFrom:
+       configMapKeyRef:
+         name: webapp-config-map
+         key: APP_COLOR
+    image: kodekloud/webapp-color
+    name: webapp-color

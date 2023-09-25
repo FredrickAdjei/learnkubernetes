@@ -1,0 +1,34 @@
+Labels and selectors are fundamental concepts in Kubernetes used for organizing, selecting, and querying resources within a cluster. They are key components of how Kubernetes manages and groups resources.
+Labels:
+Labels are key-value pairs associated with Kubernetes resources such as Pods, Services, Deployments, and more.
+Labels are used to attach metadata to resources, making it easier to identify, categorize, and organize them.
+Labels are not unique, and multiple resources can have the same label key with different values.
+Labels are typically defined in the metadata section of a resource's YAML specification.
+metadata:
+  labels:
+    app: myapp
+    environment: production
+
+
+Selectors:
+Selectors are used to filter and select resources based on their labels.
+They enable you to specify criteria for identifying a group of resources that meet certain conditions.
+Resources can be selected for various purposes, such as associating Pods with a Service or identifying Pods for scaling.
+Selectors are commonly used in combination with Services, Deployments, ReplicaSets, and other controllers.
+Example of selecting Pods with a label selector in a Service:
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+In this example, the Service selects Pods with the label app: myapp and forwards traffic to them.
+
+example
+Identify the POD which is part of the prod environment, the finance BU and of frontend tier?
+env=prod,bu=finance,tier=frontend 
+kubectl get pods --selector env=prod,bu=finance,tier=frontend 
+
+Use Kubectl get pods --selector - to get pods according to their labels

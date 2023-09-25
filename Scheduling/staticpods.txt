@@ -1,0 +1,44 @@
+Static Pods in Kubernetes are Pods that are managed directly by the Kubelet on a specific node, rather than being managed by the Kubernetes control plane. 
+They are defined in configuration files on the node itself and are typically used for system-level services or infrastructure components that need to run on the node but do not need the flexibility and features of regular Pods managed by the Kubernetes API server.
+Key characteristics and use cases of Static Pods include:
+
+Node-Based Management: Static Pods are managed by the Kubelet on a per-node basis. Each node in the cluster can run its own set of Static Pods, which are not known to the Kubernetes control plane.
+
+Configuration Files: Static Pods are defined using configuration files, typically written in YAML or JSON, and stored in a directory specified by the Kubelet (e.g., /etc/kubernetes/manifests). The Kubelet monitors this directory for changes and ensures that the Pods defined in the configuration files are running.
+
+No API Server Involvement: Static Pods are not part of the Kubernetes API server, so they are not listed in the API server's resources. The control plane has no awareness of Static Pods, making them suitable for running infrastructure components that don't require Kubernetes-level management.
+
+Simple Use Cases: Static Pods are often used for simple system-level services, such as log collectors, monitoring agents, and network plugins, that need to run on every node in the cluster. They are a way to ensure that essential components are running even if the control plane is unavailable.
+Here's an example of a Static Pod configuration file:
+
+yaml
+Copy code
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-static-pod
+spec:
+  containers:
+  - name: my-container
+    image: nginx:latest
+In this example, a Static Pod named "my-static-pod" is defined to run a container based on the NGINX image. The configuration file for this Static Pod would typically be placed in the designated directory on the node, and the Kubelet will ensure that the NGINX container is running on that node.
+
+Static Pods provide a straightforward way to manage basic node-local services without the complexity of deploying them as regular Kubernetes resources. However, they are limited in terms of the features and management capabilities available compared to Pods managed by the control plane. Static Pods are a good choice for essential infrastructure components but may not be suitable for more complex workloads.
+
+Once the static pods are created,
+you can view them by running the Docker ps command.
+So why not the kube control command
+as we have been doing so far?
+Remember, we don't have
+the rest of the Kubernetes cluster yet.
+So the kube control utility works with the kube API server.
+Since we don't have an API server now,
+no kube control utility, which is why we are
+using the Docker command.
+
+
+check static pod configuration on any given node
+cat  /var/lib/kubelet/config.yaml
+
+static pod definition file 
+etc/kubernetes/manifests

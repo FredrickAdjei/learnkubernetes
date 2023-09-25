@@ -1,0 +1,18 @@
+NodeSelector is a Kubernetes feature used to schedule Pods to specific nodes in the cluster based on node labels. 
+It allows you to specify node affinity rules for Pods, ensuring that they are placed on nodes that meet certain criteria or have specific characteristics.
+Here's how NodeSelector works:
+Node Labels: First, you need to label your nodes with key-value pairs that represent their attributes or characteristics. 
+For example, you can label nodes to indicate their hardware capabilities, location, or other distinguishing features. Here's an example of labeling a node
+-  kubectl label nodes <node-name> <label-key>=<label-value>
+Pod NodeSelector: Next, you define a NodeSelector in the Pod's YAML configuration. The NodeSelector specifies the label key-value pairs that a node must have to be considered a suitable candidate for scheduling the Pod. Here's an example:
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+spec:
+  nodeSelector:
+    <label-key>: <label-value>
+  containers:
+  - name: my-container
+    image: nginx
+

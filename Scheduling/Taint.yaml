@@ -1,0 +1,9 @@
+apiVersion: v1 
+kind: node 
+metadata:
+  name: node-01
+spec:
+  taints:
+    - key: app
+      value: web
+      effect: NoSchedule

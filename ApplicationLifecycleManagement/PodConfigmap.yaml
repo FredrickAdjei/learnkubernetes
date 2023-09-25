@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+Metadata:
+     name: my-pod
+spec:
+  containers:
+  - name: my-container
+    image: my-app-image
+    envFrom:
+    - configMapRef:
+        name: my-configmap
